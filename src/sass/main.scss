@@ -1,0 +1,167 @@
+@import "~materialize-css/sass/components/color-variables";
+$primary-color: #ff5722 !important;
+$secondary-color: color("yellow", "base") !default;
+@import "~materialize-css/dist/css/materialize.min.css";
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=M+PLUS+1p:wght@800&display=swap");
+
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	box-sizing: border-box;
+}
+html,
+body {
+	color: #222;
+	font-family: "Lato", sans-serif;
+	font-weight: 400;
+	// font-size: 62.5%;
+	line-height: 1.7;
+	text-rendering: optimizeLegibility;
+	overflow-x: hidden;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+	outline: none;
+}
+button {
+	border: none;
+	margin: 0;
+	padding: 0;
+	width: auto;
+	overflow: visible;
+	text-align: inherit;
+	border-radius: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	line-height: normal;
+	-webkit-font-smoothing: inherit;
+	-moz-osx-font-smoothing: inherit;
+	-webkit-appearance: none;
+}
+li {
+	list-style: none;
+}
+a {
+	color: inherit;
+	text-decoration: none;
+}
+button::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+.brand-logo {
+	font-family: "M PLUS 1p", sans-serif;
+	text-transform: uppercase;
+	display: inline-block;
+	margin: 0 2rem;
+	display: flex;
+	align-items: center;
+
+	span {
+		// margin-top: 5rem;
+		display: inline-block;
+		font-size: 3rem;
+	}
+}
+.introduction {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-transform: uppercase;
+	margin: 1.5rem 0;
+	p {
+		font-size: 1.4rem;
+		&:first-of-type {
+			// font-weight: bolder;
+		}
+		&:last-of-type {
+			color: gray;
+			// width: 50%;
+			margin: 1rem auto;
+			text-align: center;
+			text-transform: capitalize;
+			font-size: 1.2rem;
+		}
+	}
+}
+.signUpWith {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background-image: url(https://images.unsplash.com/photo-1439853949127-fa647821eba0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80);
+	background-size: cover;
+	align-items: stretch;
+}
+h4 {
+	text-transform: uppercase;
+	margin-bottom: 4rem;
+	font-weight: bolder;
+	color: #fff;
+	text-align: center;
+}
+.signUpWith {
+	flex: 50%;
+	padding: 4rem 4rem;
+	height: 100%;
+	a:not(:last-of-type) {
+		margin-bottom: 3rem;
+	}
+	a {
+		text-transform: none;
+	}
+}
+.card-stacked {
+	flex: 50% !important;
+}
+.submit {
+	width: 100%;
+	font-weight: bolder;
+}
+.row {
+	margin-bottom: 0;
+}
+.facebook {
+	background-color: #3b5998;
+	&:hover {
+		background-color: #576fa1;
+	}
+}
+.google {
+	background-color: #ea4335;
+	&:hover {
+		background-color: #df5e52;
+	}
+}
+.twitter {
+	background-color: #1da1f2;
+	&:hover {
+		background-color: #4fbcff;
+	}
+}
+.main-color {
+	color: #ff5722;
+}
+.main-background {
+	background-color: #ff5722;
+	&.btn:hover {
+		background-color: #fc7952;
+	}
+}
+.active {
+	color: #ff5722 !important;
+}
+input {
+	// padding: 0 0 0 1rem !important;
+}
