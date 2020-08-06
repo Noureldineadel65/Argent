@@ -16,10 +16,11 @@
     <div class="loggedOut">
         <div class="container">
             <div class="introduction">
-                <p>Welcome To</p>
-                <h1 class="brand-logo center-align main-color">Argent <span class="material-icons">
-                        account_balance_wallet
-                    </span></h1>
+
+                <h1 class="brand-logo center-align main-color">
+                    <div class="left-header-line"></div> Argent%
+                    <div class="right-header-line"></div>
+                </h1>
                 <p>the ultimate budget planner so you can finally spend money more wisely</p>
 
 
@@ -28,19 +29,56 @@
                 <div class="col s6 m7">
                     <div class="card horizontal">
                         <div class="signUpWith">
-                            <h4>Create your account</h4>
+                            <h4><span id="state">Create</span> your account</h4>
                             <a class="waves-effect waves-light btn facebook"><i
-                                    class="fab fa-facebook-square left"></i>Sign in
+                                    class="fab fa-facebook-square left"></i><span class="state-social">Create</span>
                                 with Facebook</a><a class="waves-effect waves-light btn google"><i
-                                    class="fab fa-google left"></i>Sign in with Google</a><a
-                                class="waves-effect waves-light btn twitter"><i class="fab fa-twitter left"></i>Sign in
+                                    class="fab fa-google left"></i><span class="state-social">Create</span> with
+                                Google</a><a class="waves-effect waves-light btn twitter"><i
+                                    class="fab fa-twitter left"></i><span class="state-social">Create</span>
                                 with
                                 Twitter</a>
 
+
+                        </div>
+                        <div class="card-signIn">
+                            <h4>Sign-In with email</h4>
+                            <div class="row">
+                                <form class="col s12">
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">mail</i>
+                                            <input id="sign-in-email" type="email" class="validate">
+                                            <label for="sign-in-email">Email</label>
+                                            <span class="helper-text" data-error="Email is invalid"
+                                                data-success="Email is valid"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">lock</i>
+                                            <input id="sign-in-password" type="password" class="validate">
+                                            <label for="sign-in-password">Password</label>
+                                            <span class="helper-text" data-error="Password is invalid"
+                                                data-success="Password is valid"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <a class="waves-effect waves-light btn submit main-background">SIGN
+                                                IN</a>
+                                            <a href="#" class="main-color already switch" id="switch-left">Don't have an
+                                                account?</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <div class="card-stacked">
                             <div class="card-content">
-                                <h5>Or use the classical way</h5>
+                                <h5 class="main-color">Or use the classical way</h5>
                                 <div class="card-form">
                                     <div class="row">
                                         <form class="col s12">
@@ -84,6 +122,9 @@
                                     <div class="row">
                                         <div class="col s12">
                                             <a class="waves-effect waves-light btn submit main-background">SIGN UP</a>
+                                            <a href="#" class="main-color already switch" id="switch-right">Already have
+                                                an
+                                                account?</a>
                                         </div>
                                     </div>
                                 </div>

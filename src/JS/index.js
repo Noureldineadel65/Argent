@@ -1,6 +1,9 @@
+import Modal from "./Modal";
 // Import Scss File
 import "../sass/main.scss";
+// Import Materialize JS Functions
 import "materialize-css/dist/js/materialize.min.js";
+// Importing Jquery
 import $ from "jquery";
 // Set up Firebase
 import firebase from "firebase/app";
@@ -20,5 +23,9 @@ const app = firebase.initializeApp(firebaseConfig);
 $(document).ready(function () {
 	$(".sidenav").sidenav();
 	$(".dropdown-trigger").dropdown();
-	console.log($(".dropdown-trigger"));
+	$("a").on("click", function (e) {
+		e.preventDefault();
+	});
+	// Modal interactivity
+	Modal();
 });
