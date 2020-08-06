@@ -2,6 +2,7 @@
 $primary-color: #ff5722 !important;
 $secondary-color: color("yellow", "base") !default;
 @import "~materialize-css/dist/css/materialize.min.css";
+
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=M+PLUS+1p:wght@800&display=swap");
 
 *,
@@ -56,6 +57,9 @@ li {
 a {
 	color: inherit;
 	text-decoration: none;
+}
+input {
+	background-color: transparent !important;
 }
 button::-moz-focus-inner {
 	border: 0;
@@ -182,7 +186,9 @@ h4 {
 }
 .main-background {
 	background-color: #ff5722;
-	&.btn:hover {
+	&.btn:hover,
+	&.btn:active,
+	&.btn:focus {
 		background-color: #fc7952;
 	}
 }
@@ -270,4 +276,8 @@ textarea.materialize-textarea.valid:focus,
 ::selection {
 	color: #fff;
 	background: #ff5722;
+}
+.helper-text {
+	font-size: 0.75rem !important;
+	margin-bottom: 1.5rem;
 }
