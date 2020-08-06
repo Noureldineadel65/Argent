@@ -57,6 +57,28 @@ function handlePasswords() {
 	function hideInputValue(input) {
 		input.attr("type", "password");
 	}
+	$("#sign-up-password").keyup(function () {
+		if (!validatePass($(this).val())) {
+			$(this).removeClass("valid");
+			$(this).addClass("invalid");
+		} else {
+			$(this).removeClass("invalid");
+
+			$(this).addClass("valid");
+		}
+	});
+	$("#sign-up-password").focusout(function () {
+		if (!validatePass($(this).val())) {
+			$(this).removeClass("valid");
+
+			$(this).addClass("invalid");
+			console.log($(this));
+		} else {
+			$(this).removeClass("invalid");
+
+			$(this).addClass("valid");
+		}
+	});
 }
 function formSubmit() {
 	$("#sign-in").submit(function (e) {
@@ -76,38 +98,29 @@ function formSubmit() {
 		}
 	});
 }
-$("#sign-up-password").keyup(function () {
-	if (!validatePass($(this).val())) {
-		$(this).removeClass("valid");
-		$(this).addClass("invalid");
-	} else {
-		$(this).removeClass("invalid");
 
-		$(this).addClass("valid");
-	}
-});
-$("#sign-up-password").focusout(function () {
-	if (!validatePass($(this).val())) {
-		$(this).removeClass("valid");
-
-		$(this).addClass("invalid");
-		console.log($(this));
-	} else {
-		$(this).removeClass("invalid");
-
-		$(this).addClass("valid");
-	}
-});
 function addUser(userInfo) {
 	const { email, password, firstName, lastName } = userInfo;
-	auth.createUserWithEmailAndPassword(email, password).then((e) => {
-		e.user
-			.updateProfile({
-				displayName: `${firstName} ${lastName}`,
-			})
-			.then((e) => {
-				alert(`Account Created Successfully ${firstName}`);
-			})
-			.catch((e) => {});
-	});
+	auth.createUserWithEmailAndPassword(email, password)
+		.then((e) => {
+			e.user
+				.updateProfile({
+					displayName: `${firstName} ${lastName}`,
+				})
+				.then((e) => {
+					alert(`Account Created Successfully ${firstName}`);
+				});
+		})
+		.catch((e) => {
+			if (e.code === "auth/email-already-in-use") {
+				$("#sign-up-email").removeClass("valid").addClass("invalid");
+				const helper = $("#sign-up-email")
+					.parent()
+					.find(".helper-text");
+				helper.attr("data-error", "Email already in use");
+				setTimeout(() => {
+					helper.attr("data-error", "Email is invalid");
+				}, 2000);
+			}
+		});
 }
