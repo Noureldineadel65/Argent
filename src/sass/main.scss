@@ -265,6 +265,7 @@ textarea.materialize-textarea.valid:focus,
 }
 .btn {
 	height: 3rem !important;
+	display: block;
 	line-height: 3rem !important;
 }
 ::-moz-selection {
@@ -281,3 +282,10 @@ textarea.materialize-textarea.valid:focus,
 	font-size: 0.75rem !important;
 	margin-bottom: 1.5rem;
 }
+.loader {
+	width: 4rem;
+	display: flex;
+	justify-content: center;
+	margin: -0.5rem auto;
+}
+@import "message";

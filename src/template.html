@@ -13,7 +13,16 @@
 </head>
 
 <body class="grey lighten-4">
-    <div class="loggedOut">
+    <div class="messageBoard" hidden>
+        <span class="material-icons" id="close-icon">
+            close
+        </span>
+        <div class="content">
+
+
+        </div>
+    </div>
+    <section class="loggedOut">
         <div class="container">
             <div class="introduction">
 
@@ -24,6 +33,24 @@
                 <p>the ultimate budget planner so you can finally spend money more wisely</p>
 
 
+            </div>
+            <div class="loading">
+                <div class="makingAccount" hidden>
+                    <p>Generating Your Account...</p>
+                    <div class="preloader-wrapper big active">
+                        <div class="spinner-layer spinner-blue-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="signForm">
                 <div class="col s6 m7">
@@ -130,9 +157,13 @@
 
                                             <div class="row">
                                                 <div class="col s12">
-                                                    <button type="submit"
-                                                        class="waves-effect waves-light btn submit main-background">SIGN
-                                                        UP</button>
+                                                    <div id="sign-up-action">
+                                                        <button type="submit"
+                                                            class="waves-effect waves-light btn submit main-background"
+                                                            id="sign-up-btn">SIGN
+                                                            UP</button>
+                                                        <img src="./assets/loader.svg" class="loader" hidden />
+                                                    </div>
 
                                                     <a href="#" class="main-color already switch"
                                                         id="switch-right">Already
@@ -152,31 +183,33 @@
                 </div>
             </div>
         </div>
-        <section class="loggedIn" hidden>
-            <nav class="pink lighten-2">
-                <div class="nav-wrapper">
-                    <a href="#" class="brand-logo">Argent <span class="material-icons">
-                            account_balance_wallet
-                        </span></a>
-                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Hello, Noureldine!</a></li>
-                    </ul>
-                </div>
-                <ul class="sidenav" id="mobile-demo">
-                    <li><a href="#!">Sass</a></li>
-                    <li><a href="#!">Components</a></li>
-                    <li><a href="#!">Javascript</a></li>
-                    <li><a href="#!">Mobile</a></li>
+
+    </section>
+    <section class="loggedIn" hidden>
+        <nav class="pink lighten-2">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Argent <span class="material-icons">
+                        account_balance_wallet
+                    </span></a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Hello, Noureldine!</a></li>
                 </ul>
-                <ul id="dropdown1" class="dropdown-content">
-                    <li><a href="#!">one</a></li>
-                    <li><a href="#!">two</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#!">three</a></li>
-                </ul>
-            </nav>
-        </section>
+            </div>
+            <ul class="sidenav" id="mobile-demo">
+                <li><a href="#!">Sass</a></li>
+                <li><a href="#!">Components</a></li>
+                <li><a href="#!">Javascript</a></li>
+                <li><a href="#!">Mobile</a></li>
+            </ul>
+            <ul id="dropdown1" class="dropdown-content">
+                <li><a href="#!">one</a></li>
+                <li><a href="#!">two</a></li>
+                <li class="divider"></li>
+                <li><a href="#!">three</a></li>
+            </ul>
+        </nav>
+    </section>
 </body>
 
 </html>

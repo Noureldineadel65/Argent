@@ -1,7 +1,8 @@
 import $ from "jquery";
-import { capitalize } from "./utils";
+import { capitalize, hideElement, showElement } from "./utils";
 import { auth } from "./Firebase";
 import { validatePass } from "./Form";
+import { showBoard } from "./MessageBoard";
 export default function () {
 	handleSlides();
 	handlePasswords();
@@ -100,6 +101,7 @@ function formSubmit() {
 }
 
 function addUser(userInfo) {
+	startGeneratingAccount();
 	const { email, password, firstName, lastName } = userInfo;
 	auth.createUserWithEmailAndPassword(email, password)
 		.then((e) => {
@@ -108,7 +110,8 @@ function addUser(userInfo) {
 					displayName: `${firstName} ${lastName}`,
 				})
 				.then((e) => {
-					alert(`Account Created Successfully ${firstName}`);
+					showBoard("success", firstName);
+					accountResponse();
 				});
 		})
 		.catch((e) => {
@@ -121,6 +124,19 @@ function addUser(userInfo) {
 				setTimeout(() => {
 					helper.attr("data-error", "Email is invalid");
 				}, 2000);
+			} else {
+				showBoard("error", e.code);
+				accountResponse();
 			}
 		});
+}
+hideElement($(".loader"));
+function startGeneratingAccount() {
+	hideElement($("#sign-up-btn"));
+	showElement($(".loader"), "flex");
+}
+function accountResponse(success = true) {
+	showElement($("#sign-up-btn"));
+	hideElement($(".loader"));
+	$("#sign-up").trigger("reset");
 }
