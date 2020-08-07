@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { capitalize, hideElement, showElement } from "./utils";
+import { capitalize, hideElement, showElement, getFormValues } from "./utils";
 import { auth } from "./Firebase";
 import { validatePass } from "./Form";
 import { showBoard } from "./MessageBoard";
@@ -83,17 +83,36 @@ function handlePasswords() {
 }
 function formSubmit() {
 	$("#sign-in").submit(function (e) {
+		startSigningIn();
 		e.preventDefault();
+		const [email, password] = getFormValues($(e.target));
+		auth.signInWithEmailAndPassword(email, password)
+			.then((cred) => {
+				// showBoard("welcome", cred.user.displayName);
+				console.log("Successfully Signed In!");
+				signInResponse();
+			})
+			.catch((e) => {
+				if (
+					e.code === "auth/wrong-password" ||
+					e.code === "auth/user-not-found"
+				) {
+					$("#sign-in-password").addClass("invalid");
+					$("#sign-in-password").focus(function () {
+						$(this).removeClass("invalid");
+					});
+				} else {
+					showBoard("error", e.message);
+				}
+				signInResponse();
+			});
 	});
 	$("#sign-up").submit(function (e) {
 		e.preventDefault();
-		const values = [];
-		$(e.target)
-			.find("input")
-			.each(function () {
-				values.push($(this).val());
-			});
-		const [firstName, lastName, email, password] = values;
+
+		const [firstName, lastName, email, password] = getFormValues(
+			$(e.target)
+		);
 		if (validatePass(password)) {
 			addUser({ firstName, lastName, email, password });
 		}
@@ -111,7 +130,7 @@ function addUser(userInfo) {
 				})
 				.then((e) => {
 					showBoard("success", firstName);
-					accountResponse();
+					signUpResponse();
 				});
 		})
 		.catch((e) => {
@@ -125,18 +144,27 @@ function addUser(userInfo) {
 					helper.attr("data-error", "Email is invalid");
 				}, 2000);
 			} else {
-				showBoard("error", e.code);
-				accountResponse();
+				showBoard("error", e.message);
+				signUpResponse();
 			}
 		});
 }
 hideElement($(".loader"));
 function startGeneratingAccount() {
 	hideElement($("#sign-up-btn"));
-	showElement($(".loader"), "flex");
+	showElement($("#sign-up-action .loader"), "flex");
 }
-function accountResponse(success = true) {
+function startSigningIn() {
+	hideElement($("#sign-in-btn"));
+	showElement($("#sign-in-action .loader"), "flex");
+}
+function signInResponse() {
+	showElement($("#sign-in-btn"));
+	hideElement($("#sign-in-action .loader"));
+	$("#sign-in").trigger("reset");
+}
+function signUpResponse() {
 	showElement($("#sign-up-btn"));
-	hideElement($(".loader"));
+	hideElement($("#sign-up-action .loader"));
 	$("#sign-up").trigger("reset");
 }

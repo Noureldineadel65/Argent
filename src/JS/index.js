@@ -6,7 +6,8 @@ import "../sass/main.scss";
 import "materialize-css/dist/js/materialize.min.js";
 // Importing Jquery
 import $ from "jquery";
-// Set up Firebase
+import { auth } from "./Firebase";
+import { showBoard } from "./MessageBoard";
 
 // Initalizing Navbar and dropdown
 $(document).ready(function () {
@@ -17,4 +18,12 @@ $(document).ready(function () {
 	});
 	// Modal interactivity
 	Modal();
+});
+// Auth State Changes
+auth.onAuthStateChanged((user) => {
+	if (user) {
+		showBoard("welcome", user.displayName);
+	} else {
+		console.log("not logged");
+	}
 });

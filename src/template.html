@@ -34,24 +34,7 @@
 
 
             </div>
-            <div class="loading">
-                <div class="makingAccount" hidden>
-                    <p>Generating Your Account...</p>
-                    <div class="preloader-wrapper big active">
-                        <div class="spinner-layer spinner-blue-only">
-                            <div class="circle-clipper left">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="gap-patch">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="circle-clipper right">
-                                <div class="circle"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div class="signForm">
                 <div class="col s6 m7">
                     <div class="card horizontal">
@@ -75,7 +58,8 @@
                                     <div class="row">
                                         <div class="input-field col s12">
                                             <i class="material-icons prefix">mail</i>
-                                            <input id="sign-in-email" type="email" class="validate" autocomplete="off">
+                                            <input id="sign-in-email" type="email" class="validate" autocomplete="off"
+                                                required>
                                             <label for="sign-in-email">Email</label>
                                             <span class="helper-text" data-error="Email is invalid"
                                                 data-success="Email is valid"></span>
@@ -85,18 +69,23 @@
                                     <div class="row">
                                         <div class="input-field col s12">
                                             <i class="material-icons prefix">lock</i>
-                                            <input id="sign-in-password" type="password" class="validate password"
-                                                autocomplete="off">
+                                            <input id="sign-in-password" type="password" class="password"
+                                                autocomplete="off" required>
                                             <label for="sign-in-password">Password</label>
-                                            <span class="helper-text" data-error="Password is invalid"
-                                                data-success="Password is valid"></span>
+                                            <span class="helper-text"
+                                                data-error="Either Email or Password is invalid"></span>
                                         </div>
 
                                     </div>
                                     <div class="row">
                                         <div class="col s12">
-                                            <a class="waves-effect waves-light btn submit main-background">SIGN
-                                                IN</a>
+                                            <div id="sign-in-action">
+                                                <button type="submit"
+                                                    class="waves-effect waves-light btn submit main-background"
+                                                    id="sign-in-btn">SIGN
+                                                    IN</button>
+                                                <img src="./assets/loader.svg" class="loader" hidden />
+                                            </div>
                                             <a href="#" class="main-color already switch" id="switch-left">Don't have an
                                                 account?</a>
                                         </div>

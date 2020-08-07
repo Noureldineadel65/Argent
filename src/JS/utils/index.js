@@ -7,3 +7,10 @@ export function hideElement(el) {
 export function showElement(el, display = "block") {
 	el.css("display", display);
 }
+export function getFormValues(form) {
+	const values = [];
+	form.find("input").each(function () {
+		values.push($(this).val());
+	});
+	return values;
+}
