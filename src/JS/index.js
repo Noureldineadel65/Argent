@@ -8,6 +8,7 @@ import "materialize-css/dist/js/materialize.min.js";
 import $ from "jquery";
 import { auth } from "./Firebase";
 import { showBoard } from "./MessageBoard";
+import switchPage from "./ViewControl";
 
 // Initalizing Navbar and dropdown
 $(document).ready(function () {
@@ -22,7 +23,9 @@ $(document).ready(function () {
 // Auth State Changes
 auth.onAuthStateChanged((user) => {
 	if (user) {
-		showBoard("welcome", user.displayName);
+		showBoard("welcome", user.displayName, function () {
+			switchPage("app");
+		});
 	} else {
 		console.log("not logged");
 	}

@@ -23,7 +23,7 @@ const types = {
 		return `<h1>Welcome Back, ${name}!👋</h1><p>Hope you've been doing well :)</p>`;
 	},
 };
-export function showBoard(type, msg) {
+export function showBoard(type, msg, cb) {
 	content.html(types[type](msg));
 	$("html").css("overflow", "hidden");
 	$("body").css("overflow", "hidden");
@@ -32,6 +32,7 @@ export function showBoard(type, msg) {
 	setTimeout(() => {
 		messageBoard.addClass("opened");
 	}, 0);
+	typeof cb === "function" && setTimeout(cb, 500);
 }
 export function hideBoard() {
 	messageBoard.removeClass("opened");
