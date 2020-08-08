@@ -13,15 +13,17 @@ export default function (user) {
 	$(".logout").on("click", function () {
 		auth.signOut();
 	});
+	const graph = DrawGraph();
 	let thingsRef;
 	let unsubscribe;
 	auth.onAuthStateChanged((user) => {
 		if (user) {
 			thingsRef = db.collection("expenses");
-			$("#add-item").on("click", function () {
+			$("#item-form").on("submit", function () {
 				const { serverTimestamp } = firebase.firestore.FieldValue;
 				const itemName = $("#item-name").val();
 				const itemCost = Number($("#item-cost").val());
+				$(this).trigger("reset");
 				thingsRef.add({
 					uid: user.uid,
 					name: itemName,
@@ -33,9 +35,10 @@ export default function (user) {
 				.where("uid", "==", user.uid)
 				.onSnapshot((querySnapshot) => {
 					const data = querySnapshot.docs.map((doc) => doc.data());
-					console.log(data);
+					graph(data);
 				});
+		} else {
+			unsubscribe && unsubscribe();
 		}
 	});
-	DrawGraph();
 }
