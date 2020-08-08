@@ -9,24 +9,23 @@ import $ from "jquery";
 import { auth } from "./Firebase";
 import { showBoard } from "./MessageBoard";
 import switchPage from "./ViewControl";
+import App from "./App";
 
 // Initalizing Navbar and dropdown
 $(document).ready(function () {
-	$(".sidenav").sidenav();
-	$(".dropdown-trigger").dropdown();
-	$("a").on("click", function (e) {
-		e.preventDefault();
-	});
-	// Modal interactivity
 	Modal();
 });
 // Auth State Changes
 auth.onAuthStateChanged((user) => {
 	if (user) {
 		showBoard("welcome", user.displayName, function () {
-			switchPage("app");
+			const { displayName, email, photoUrl } = user;
+			switchPage("app", { displayName, email, photoUrl });
+			App(user);
 		});
 	} else {
-		console.log("not logged");
+		switchPage("form");
+
+		Modal();
 	}
 });

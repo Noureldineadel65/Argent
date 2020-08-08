@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { capitalize, hideElement, showElement, getFormValues } from "./utils";
+import firebase from "firebase/app";
 import { auth } from "./Firebase";
 import { validatePass } from "./Form";
 import { showBoard } from "./MessageBoard";
@@ -7,21 +8,17 @@ export default function () {
 	handleSlides();
 	handlePasswords();
 	formSubmit();
+	socialLogs();
 }
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 function handleSlides() {
 	const signUpWith = $(".signUpWith");
 	$(".already").on("click", function (e) {
-		let state = "CREATE";
 		if (e.target.getAttribute("id") === "switch-right") {
-			state = "SIGN-IN";
 			signUpWith.addClass("slided");
 		} else {
 			signUpWith.removeClass("slided");
-			state = "CREATE";
 		}
-		$("#state").text(state);
-
-		$(".state-social").text(capitalize(state.toLowerCase()));
 	});
 }
 function handlePasswords() {
@@ -167,4 +164,14 @@ function signUpResponse() {
 	showElement($("#sign-up-btn"));
 	hideElement($("#sign-up-action .loader"));
 	$("#sign-up").trigger("reset");
+}
+function socialLogs() {
+	$(".google").on("click", function () {
+		firebase
+			.auth()
+			.signInWithPopup(googleProvider)
+			.then((result) => {
+				console.log(result);
+			});
+	});
 }

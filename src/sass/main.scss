@@ -76,7 +76,8 @@ button::-moz-focus-inner {
 
 	span {
 		// margin-top: 5rem;
-		display: inline-block;
+		display: flex;
+		align-items: inline-block;
 		font-size: 3rem;
 	}
 	position: relative;
@@ -182,13 +183,18 @@ h4 {
 	}
 }
 .main-color {
-	color: #ff5722;
+	color: #ff5722 !important;
 }
 .main-background {
-	background-color: #ff5722;
+	background-color: #ff5722 !important;
 	&.btn:hover,
 	&.btn:active,
 	&.btn:focus {
+		background-color: #fc7952;
+	}
+	&.btn-large:hover,
+	&.btn-large:active,
+	&.btn-large:focus {
 		background-color: #fc7952;
 	}
 }
@@ -288,4 +294,9 @@ textarea.materialize-textarea.valid:focus,
 	justify-content: center;
 	margin: -0.5rem auto;
 }
+.nav-wrapper {
+	background-color: #ff5722;
+}
+
 @import "message";
+@import "app";

@@ -37,8 +37,23 @@ module.exports = {
 				use: {
 					loader: "file-loader",
 					options: {
-						name: "[name].[hash].[ext]",
+						name: "[name].[ext]",
 						outputPath: "imgs",
+					},
+				},
+			},
+			{
+				test: /\.hbs$/,
+				use: {
+					loader: "handlebars-loader",
+					options: {
+						helperDirs: path.join(
+							__dirname,
+							"./src/JS/handlebars/helpers/index.js"
+						),
+						precompileOptions: {
+							knownHelpersOnly: false,
+						},
 					},
 				},
 			},
