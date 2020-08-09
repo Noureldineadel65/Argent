@@ -1,5 +1,3 @@
-import Modal from "./Modal";
-
 // Import Scss File
 import "../sass/main.scss";
 // Import Materialize JS Functions
@@ -13,7 +11,7 @@ import App from "./App";
 
 // Initalizing Navbar and dropdown
 $(document).ready(function () {
-	Modal();
+	switchPage("form");
 });
 // Auth State Changes
 auth.onAuthStateChanged((user) => {
@@ -25,7 +23,5 @@ auth.onAuthStateChanged((user) => {
 		});
 	} else {
 		switchPage("form");
-
-		Modal();
 	}
 });
