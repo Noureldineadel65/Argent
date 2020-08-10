@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import legendPlugin from "d3-svg-legend";
 
 export default function () {
 	const dimensions = {
@@ -47,9 +48,17 @@ export default function () {
 			return arcPath(i(t));
 		};
 	};
+	const legendGroup = svg
+		.append("g")
+		.attr("transform", `translate(${dimensions.width + 40}, 10)`);
+	const legend = legendPlugin
+		.legendColor()
+		.shape("circle")
+		.shapePadding(10)
+		.scale(color);
 	return function (data) {
-		console.log(data);
 		color.domain(data.map((e) => e.name));
+		legendGroup.call(legend);
 		const paths = graph.selectAll("path").data(pie(data));
 		paths
 			.exit()
