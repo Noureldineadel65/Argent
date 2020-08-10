@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import legendPlugin from "d3-svg-legend";
+import { db } from "./Firebase";
 
 export default function () {
 	const dimensions = {
@@ -53,7 +54,7 @@ export default function () {
 		.attr("transform", `translate(${dimensions.width + 40}, 10)`);
 	const legend = legendPlugin
 		.legendColor()
-		.shape("circle")
+		.shape("square")
 		.shapePadding(10)
 		.scale(color);
 	return function (data) {
@@ -86,5 +87,23 @@ export default function () {
 			.transition()
 			.duration(750)
 			.attrTween("d", arcTweenEnter);
+		graph.selectAll("path").on("mouseover", onMouseOver);
+		graph.selectAll("path").on("mouseleave", onMouseLeave);
+		graph.selectAll("path").on("click", handleClick);
 	};
+	function onMouseOver(d) {
+		d3.select(this)
+			.transition("changeSliceFill")
+			.duration(300)
+			.attr("fill", "#fff");
+	}
+	function onMouseLeave(d) {
+		d3.select(this)
+			.transition("changeSliceFill")
+			.duration(300)
+			.attr("fill", color(d.data.name));
+	}
+	function handleClick(d) {
+		db.collection("expenses").doc(d.data.id).delete();
+	}
 }

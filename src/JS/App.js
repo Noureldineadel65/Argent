@@ -45,7 +45,10 @@ export default function (user) {
 			unsubscribe = thingsRef
 				.where("uid", "==", user.uid)
 				.onSnapshot((querySnapshot) => {
-					const data = querySnapshot.docs.map((doc) => doc.data());
+					const data = querySnapshot.docs.map((doc) => {
+						return { ...doc.data(), id: doc.id };
+					});
+
 					if (!data.length) {
 						draw = false;
 						$(".canvas").html(empty());
