@@ -1,9 +1,10 @@
 import $ from "jquery";
-import firebase from "firebase/app";
+
 import { auth } from "./Firebase";
 import DrawGraph from "./DrawGraph";
 import { db } from "./Firebase";
-import { xor } from "lodash";
+import empty from "./handlebars/empty.hbs";
+
 export default function (user) {
 	$(".sidenav").sidenav();
 	$(".dropdown-trigger").dropdown();
@@ -13,10 +14,11 @@ export default function (user) {
 	$(".logout").on("click", function () {
 		auth.signOut();
 	});
-	const graph = DrawGraph();
+
 	let thingsRef;
 	let unsubscribe;
-	let originalData = [];
+	let graph;
+	let draw = false;
 	auth.onAuthStateChanged((user) => {
 		if (user) {
 			thingsRef = db.collection("expenses");
@@ -24,27 +26,38 @@ export default function (user) {
 				e.preventDefault();
 
 				const itemName = $("#item-name").val();
-				const itemCost = Number($("#item-cost").val());
-				$(this).trigger("reset");
-				thingsRef.add({
-					uid: user.uid,
-					name: itemName,
-					cost: itemCost,
-					createdAt: new Date(),
-				});
+				const itemCost = $("#item-cost").val();
+				if (!isNaN(itemCost)) {
+					$(this).trigger("reset");
+					thingsRef.add({
+						uid: user.uid,
+						name: itemName,
+						cost: Number(itemCost),
+						createdAt: new Date(),
+					});
+				} else {
+					$("#error").removeClass("hide");
+					setTimeout(() => {
+						$("#error").addClass("hide");
+					}, 1500);
+				}
 			});
 			unsubscribe = thingsRef
 				.where("uid", "==", user.uid)
 				.onSnapshot((querySnapshot) => {
 					const data = querySnapshot.docs.map((doc) => doc.data());
-					originalData = data;
-					if (
-						!(
-							(originalData.length === data.length) === 0 &&
-							xor(originalData, data).length === 0
-						)
-					) {
-						graph(originalData);
+					if (!data.length) {
+						draw = false;
+						$(".canvas").html(empty());
+					} else {
+						if (!draw) {
+							$(".canvas").html("");
+							draw = true;
+							graph = DrawGraph();
+							graph(data);
+						} else {
+							graph(data);
+						}
 					}
 				});
 		} else {

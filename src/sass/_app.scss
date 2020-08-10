@@ -13,3 +13,11 @@ main {
 	display: flex;
 	align-items: center;
 }
+.empty-wallet {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	.wallet {
+		width: 20rem;
+	}
+}

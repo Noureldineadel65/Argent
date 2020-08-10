@@ -18,7 +18,7 @@ export default function () {
 		.attr("transform", `translate(${cent.x}, ${cent.y})`);
 	const pie = d3
 		.pie()
-		.sort((a, b) => b.cost - a.cost)
+		.sort(null)
 		.value((d) => d.cost);
 
 	const arcPath = d3
@@ -40,7 +40,7 @@ export default function () {
 			return arcPath(d);
 		};
 	};
-	const arcTweenUpdate = (d) => {
+	const arcTweenUpdate = function (d) {
 		const i = d3.interpolate(this._current, d);
 		this._current = i(1);
 		return function (t) {
@@ -48,8 +48,9 @@ export default function () {
 		};
 	};
 	return function (data) {
+		console.log(data);
 		color.domain(data.map((e) => e.name));
-		const paths = graph.selectAll("paths").data(pie(data));
+		const paths = graph.selectAll("path").data(pie(data));
 		paths
 			.exit()
 			.transition()
