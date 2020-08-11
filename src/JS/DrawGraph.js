@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import legendPlugin from "d3-svg-legend";
+import tipPlugin from "d3-tip";
 import { db } from "./Firebase";
 
 export default function () {
@@ -57,6 +58,15 @@ export default function () {
 		.shape("square")
 		.shapePadding(10)
 		.scale(color);
+	const tip = tipPlugin()
+		.attr("class", "tip card")
+		.html((d) => {
+			let content = `<div class="name">${d.data.name}</div>`;
+			content += `<div class="cost">${d.data.cost}</div>`;
+			content += `<div class="delete">Double click slice to delete</div>`;
+			return content;
+		});
+	graph.call(tip);
 	return function (data) {
 		color.domain(data.map((e) => e.name));
 		legendGroup.call(legend);
@@ -89,21 +99,24 @@ export default function () {
 			.attrTween("d", arcTweenEnter);
 		graph.selectAll("path").on("mouseover", onMouseOver);
 		graph.selectAll("path").on("mouseleave", onMouseLeave);
-		graph.selectAll("path").on("click", handleClick);
+		graph.selectAll("path").on("dblclick", handleClick);
 	};
-	function onMouseOver(d) {
+	function onMouseOver(d, n, i) {
+		tip.show(d, this);
 		d3.select(this)
 			.transition("changeSliceFill")
 			.duration(300)
 			.attr("fill", "#fff");
 	}
 	function onMouseLeave(d) {
+		tip.hide();
 		d3.select(this)
 			.transition("changeSliceFill")
 			.duration(300)
 			.attr("fill", color(d.data.name));
 	}
 	function handleClick(d) {
-		db.collection("expenses").doc(d.data.id).delete();
+		tip.hide();
+		db.collection(d.data.uid).doc(d.data.id).delete();
 	}
 }

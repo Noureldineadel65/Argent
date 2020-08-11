@@ -14,32 +14,35 @@ export default function (user) {
 	$(".logout").on("click", function () {
 		auth.signOut();
 	});
-
+	$("select").formSelect();
 	let thingsRef;
 	let unsubscribe;
 	let graph;
 	let draw = false;
 	auth.onAuthStateChanged((user) => {
 		if (user) {
-			thingsRef = db.collection("expenses");
+			thingsRef = db.collection(user.uid);
+
 			$("#item-form").on("submit", function (e) {
 				e.preventDefault();
 
 				const itemName = $("#item-name").val();
 				const itemCost = $("#item-cost").val();
-				if (!isNaN(itemCost)) {
+				const type = $("select").val();
+
+				if (!isNaN(itemCost) && type) {
 					$(this).trigger("reset");
 					thingsRef.add({
 						uid: user.uid,
 						name: itemName,
 						cost: Number(itemCost),
+						type,
 						createdAt: new Date(),
 					});
+				} else if (!type) {
+					showError("Please select a type");
 				} else {
-					$("#error").removeClass("hide");
-					setTimeout(() => {
-						$("#error").addClass("hide");
-					}, 1500);
+					showError("A number must be provided");
 				}
 			});
 			unsubscribe = thingsRef
@@ -67,4 +70,12 @@ export default function (user) {
 			unsubscribe && unsubscribe();
 		}
 	});
+	function showError(msg) {
+		const el = $("#error");
+		el.text(msg);
+		el.removeClass("hide");
+		setTimeout(() => {
+			el.addClass("hide");
+		}, 1500);
+	}
 }
