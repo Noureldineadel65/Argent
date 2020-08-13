@@ -1,8 +1,9 @@
 import $ from "jquery";
-
+import { format } from "d3";
 import { auth } from "./Firebase";
 import DrawGraph from "./DrawGraph";
 import { db } from "./Firebase";
+import { animateNumber } from "./utils";
 import empty from "./handlebars/empty.hbs";
 
 export default function (user) {
@@ -17,8 +18,10 @@ export default function (user) {
 	$("select").formSelect();
 	let thingsRef;
 	let unsubscribe;
+	let sizeValue = 1;
 	let graph;
 	let draw = false;
+
 	auth.onAuthStateChanged((user) => {
 		if (user) {
 			thingsRef = db.collection(user.uid);
@@ -59,11 +62,15 @@ export default function (user) {
 						if (!draw) {
 							$(".canvas").html("");
 							draw = true;
-							graph = DrawGraph();
+							graph = DrawGraph(sizeValue);
 							graph(data);
+
+							// animateNumber($("#total"), "40.00");
 						} else {
 							graph(data);
 						}
+						updateTotal(data);
+						updateTotalIncome(data);
 					}
 				});
 		} else {
@@ -77,5 +84,26 @@ export default function (user) {
 		setTimeout(() => {
 			el.addClass("hide");
 		}, 1500);
+	}
+	function updateTotal(data) {
+		const sumIncome = data
+			.filter((e) => e.type === "income")
+			.reduce((acc, current) => {
+				return acc + current.cost;
+			}, 0);
+		const sumExpense = data
+			.filter((e) => e.type === "expenses")
+			.reduce((acc, current) => {
+				return acc + current.cost;
+			}, 0);
+		animateNumber($("#total"), format(".2f")(sumIncome - sumExpense), 0.1);
+	}
+	function updateTotalIncome(data) {
+		const sumIncome = data
+			.filter((e) => e.type === "income")
+			.reduce((acc, current) => {
+				return acc + current.cost;
+			}, 0);
+		$("#income-total");
 	}
 }

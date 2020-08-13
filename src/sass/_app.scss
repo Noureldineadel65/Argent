@@ -82,7 +82,6 @@ main {
 	.row {
 		display: flex;
 		align-items: center;
-		// justify-content: center;
 	}
 	.col:first-of-type {
 		h5 {
@@ -104,6 +103,48 @@ main {
 			background-color: #e71d36;
 			padding: 1rem 2rem;
 			border: 2px solid #fff;
+		}
+	}
+}
+#showcase {
+	ul {
+		li {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			background-color: #fff;
+			padding: 1rem 2rem;
+			font-size: 0.9rem;
+		}
+	}
+	.col:first-of-type {
+		margin-right: 2rem !important;
+	}
+}
+.row .col {
+	padding: 0;
+}
+main #counter {
+	.col:first-of-type {
+		margin-right: 2rem !important;
+	}
+}
+@media only screen and (max-width: 600px) {
+	#showcase {
+		.row {
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			.col:first-of-type {
+				margin-right: 0 !important;
+			}
+		}
+	}
+	main #counter {
+		flex-direction: column;
+		.col:first-of-type {
+			margin-right: 0rem !important;
+			margin-bottom: 1rem !important;
 		}
 	}
 }

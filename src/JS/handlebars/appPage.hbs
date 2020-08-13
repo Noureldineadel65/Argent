@@ -26,17 +26,20 @@
     <main>
         <div class="container section">
             <div class="row" id="counter">
-                <div class="col s12 m6 total-amount">
-                    <div class="plus">+</div> <span id="total">0.00</span>
+                <div class="col xl12 m6 total-amount">
+                    <span id="total">0.00</span>
                 </div>
-                <div class="col s12 m5 push-m1" id="totals">
+                <div class="col xl12 m6" id="totals">
                     <div class="income-box">
                         <span>INCOME</span>
-                        <span>+ <span id="income-total">4,000.00</span></span>
+                        <span>
+                            <span class="sign">+</span> <span id="income-total">4,000.00</span>
+                        </span>
                     </div>
                     <div class="expenses-box">
                         <span>EXPENSES</span>
-                        <span>- <span id="expenses-total">900.00</span>
+                        <span>
+                            <span class="sign">-</span> <span id="expenses-total">900.00</span>
                             <span class="total-percentage-box">
                                 <span id="total-percentage">32</span>%
                             </span>
@@ -78,8 +81,8 @@
                         </div>
                     </form>
                 </div>
-                <div class="col s12 m5 push-m1">
-                    <div class="canvas"></div>
+                <div class="col s12 m6">
+                    <div class="canvas" class="overflow-hidden"></div>
                 </div>
             </div>
         </div>
@@ -87,10 +90,26 @@
             <div class="row">
                 <div class="col s12 m6">
                     <h5>Income</h5>
+                    <ul class="incomes" id="incomes">
+                        <li>
+                            <span class="income-name">Website Project</span>
+                            <span>
+                                <span class="sign">+</span> <span class="income-number">1,500.00</span>
+                            </span>
+
+                        </li>
+                    </ul>
                 </div>
                 <div class="col s12 m6">
                     <h5>Expenses</h5>
-
+                    <ul class="expenses" id="expenses">
+                        <li>
+                            <span class="expense-name">Rent</span>
+                            <span>
+                                <span class="sign">-</span> <span class="expense-number">900</span>
+                            </span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

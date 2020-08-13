@@ -1,21 +1,38 @@
 import * as d3 from "d3";
+import $ from "jquery";
 import legendPlugin from "d3-svg-legend";
 import tipPlugin from "d3-tip";
 import { db } from "./Firebase";
+let sizeValue = 1;
+function mapValueToSize() {
+	return d3.scaleLinear().domain([1310, 360]).range([1, 0.6]);
+}
+function getSizeOfPie() {
+	const win = $(window);
 
+	if (win.width() <= 1310) {
+		sizeValue = mapValueToSize()(win.width());
+	}
+}
+getSizeOfPie();
 export default function () {
 	const dimensions = {
-		height: 300,
-		width: 300,
-		radius: 150,
+		height: 300 * 0.5,
+		width: 300 * sizeValue,
+		radius: 150 * sizeValue,
 	};
 
-	const cent = { x: dimensions.width / 2 + 5, y: dimensions.height / 2 + 20 };
+	const cent = {
+		x: dimensions.width / 2,
+		y: dimensions.height / 2 + (300 - 300 * 0.5) / 2,
+	};
 	const svg = d3
 		.select(".canvas")
 		.append("svg")
 		.attr("width", dimensions.width + 150)
-		.attr("height", dimensions.height + 150);
+		.attr("height", dimensions.height + 150)
+		.attr("transform", `translate(${80 / 4}, ${0})`);
+
 	const graph = svg
 		.append("g")
 		.attr("transform", `translate(${cent.x}, ${cent.y})`);
@@ -50,9 +67,16 @@ export default function () {
 			return arcPath(i(t));
 		};
 	};
+	let translate;
+	if (dimensions.width >= 210) {
+		translate =
+			d3.select(".canvas").node().getBoundingClientRect().width - 80;
+	} else {
+		translate = dimensions.width / sizeValue - 40;
+	}
 	const legendGroup = svg
 		.append("g")
-		.attr("transform", `translate(${dimensions.width + 40}, 10)`);
+		.attr("transform", `translate(${translate}, 10)`);
 	const legend = legendPlugin
 		.legendColor()
 		.shape("square")
