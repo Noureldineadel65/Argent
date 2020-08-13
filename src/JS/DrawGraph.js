@@ -86,7 +86,9 @@ export default function () {
 		.attr("class", "tip card")
 		.html((d) => {
 			let content = `<div class="name">${d.data.name}</div>`;
+			content += `<div class="type">${d.data.type}</div>`;
 			content += `<div class="cost">${d.data.cost}</div>`;
+			content += `<div class="edit">Click slice to Edit</div>`;
 			content += `<div class="delete">Double click slice to delete</div>`;
 			return content;
 		});

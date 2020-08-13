@@ -21,7 +21,12 @@ export default function (user) {
 	let sizeValue = 1;
 	let graph;
 	let draw = false;
-
+	const updateFunctions = [
+		updateTotal,
+		updateTotalIncome,
+		updateTotalExpenses,
+		updateExpensePercentage,
+	];
 	auth.onAuthStateChanged((user) => {
 		if (user) {
 			thingsRef = db.collection(user.uid);
@@ -69,8 +74,10 @@ export default function (user) {
 						} else {
 							graph(data);
 						}
-						updateTotal(data);
-						updateTotalIncome(data);
+
+						updateFunctions.forEach((e) => {
+							e(data);
+						});
 					}
 				});
 		} else {
@@ -96,7 +103,7 @@ export default function (user) {
 			.reduce((acc, current) => {
 				return acc + current.cost;
 			}, 0);
-		animateNumber($("#total"), format(".2f")(sumIncome - sumExpense), 0.1);
+		animateNumber($("#total"), format(".2f")(sumIncome - sumExpense), 0.01);
 	}
 	function updateTotalIncome(data) {
 		const sumIncome = data
@@ -104,6 +111,17 @@ export default function (user) {
 			.reduce((acc, current) => {
 				return acc + current.cost;
 			}, 0);
-		$("#income-total");
+		animateNumber($("#income-total"), format(".2f")(sumIncome), 0.01);
+	}
+	function updateTotalExpenses(data) {
+		const sumExpense = data
+			.filter((e) => e.type === "expenses")
+			.reduce((acc, current) => {
+				return acc + current.cost;
+			}, 0);
+		animateNumber($("#expenses-total"), format(".2f")(sumExpense), 0.01);
+	}
+	function updateExpensePercentage(data) {
+		animateNumber($("#total-percentage"));
 	}
 }

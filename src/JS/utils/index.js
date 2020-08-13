@@ -29,7 +29,7 @@ export function animateNumber(
 		text = textEl.text().split(".");
 		end = end.split(".");
 
-		let firstNum = Number(text[0]);
+		let firstNum = Number(text[0].split(",").join(""));
 		const firstMode =
 			Number(end[0]) - Number(text[0]) >= 0 ? "plus" : "minus";
 		const firstCount = setInterval(() => {
