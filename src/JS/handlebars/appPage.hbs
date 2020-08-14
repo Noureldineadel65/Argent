@@ -41,7 +41,7 @@
                         <span>
                             <span class="sign">-</span> <span id="expenses-total">0.00</span>
                             <span class="total-percentage-box">
-                                <span id="total-percentage">32</span>%
+                                <span id="total-percentage">0</span>%
                             </span>
                         </span>
                     </div>
@@ -67,7 +67,7 @@
                                 <select>
                                     <option value="" disabled selected>Choose Type</option>
                                     <option value="income">Income</option>
-                                    <option value="expenses">Expenses</option>
+                                    <option value="expense">Expenses</option>
                                 </select>
 
                             </div>
@@ -91,24 +91,24 @@
                 <div class="col s12 m6">
                     <h5>Income</h5>
                     <ul class="incomes" id="incomes">
-                        <li>
+                        {{!-- <li>
                             <span class="income-name">Website Project</span>
-                            <span>
-                                <span class="sign">+</span> <span class="income-number">1,500.00</span>
+                            <span class="income-number">
+                                <span class="sign">+</span> <span class="value">1,500.00</span>
                             </span>
-
-                        </li>
+                            <span class="delete-button">X</span>
+                        </li> --}}
                     </ul>
                 </div>
                 <div class="col s12 m6">
                     <h5>Expenses</h5>
                     <ul class="expenses" id="expenses">
-                        <li>
+                        {{!-- <li>
                             <span class="expense-name">Rent</span>
-                            <span>
-                                <span class="sign">-</span> <span class="expense-number">900</span>
-                            </span>
-                        </li>
+                            <span class="expense-number">
+                                <span class="sign">-</span> <span class="value">900</span>
+                            </span><span class="delete-button">X</span>
+                        </li> --}}
                     </ul>
                 </div>
             </div>

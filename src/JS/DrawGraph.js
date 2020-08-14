@@ -69,8 +69,7 @@ export default function () {
 	};
 	let translate;
 	if (dimensions.width >= 210) {
-		translate =
-			d3.select(".canvas").node().getBoundingClientRect().width - 80;
+		translate = dimensions.width + 40;
 	} else {
 		translate = dimensions.width / sizeValue - 40;
 	}

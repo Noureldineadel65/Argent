@@ -3,7 +3,7 @@ import { format } from "d3";
 import { auth } from "./Firebase";
 import DrawGraph from "./DrawGraph";
 import { db } from "./Firebase";
-import { animateNumber } from "./utils";
+import { animateNumber, getPercentageChange } from "./utils";
 import empty from "./handlebars/empty.hbs";
 
 export default function (user) {
@@ -27,6 +27,60 @@ export default function (user) {
 		updateTotalExpenses,
 		updateExpensePercentage,
 	];
+	const addItem = {
+		income: function (name, cost, uid, data) {
+			const incomes = $("#incomes");
+			incomes.append(`<li data-id="${uid}">
+			<span class="income-name">${name}</span>
+			<span class="income-number">
+				<span class="sign">+</span> <span class="value">${cost}</span>
+				<span class="income-percentage-box">
+                                <span class="income-percentage">0</span>%
+                            </span>
+			</span><span class="delete-button">X</span>
+		</li>`);
+			const sumIncome = data
+				.filter((e) => e.type === "income")
+				.reduce((acc, current) => {
+					return acc + current.cost;
+				}, 0);
+
+			const res = getPercentageChange(sumIncome, sumIncome - cost);
+
+			animateNumber(
+				$(`li[data-id="${uid}"] .income-percentage`),
+				res,
+				0.01,
+				false
+			);
+		},
+		expense: function (name, cost, uid, data) {
+			const expenses = $("#expenses");
+			expenses.append(`<li data-id="${uid}">
+			<span class="expense-name">${name}</span>
+			<span class="expense-number">
+				<span class="sign">-</span> <span class="value">${cost}</span>
+				<span class="expense-percentage-box">
+                                <span class="expense-percentage">0</span>%
+                            </span>
+			</span><span class="delete-button">X</span>
+		</li>`);
+			const sumIncome = data
+				.filter((e) => e.type === "income")
+				.reduce((acc, current) => {
+					return acc + current.cost;
+				}, 0);
+
+			const res = getPercentageChange(sumIncome, sumIncome - cost);
+
+			animateNumber(
+				$(`li[data-id="${uid}"] .expense-percentage`),
+				res,
+				0.01,
+				false
+			);
+		},
+	};
 	auth.onAuthStateChanged((user) => {
 		if (user) {
 			thingsRef = db.collection(user.uid);
@@ -69,16 +123,27 @@ export default function (user) {
 							draw = true;
 							graph = DrawGraph(sizeValue);
 							graph(data);
-
-							// animateNumber($("#total"), "40.00");
 						} else {
 							graph(data);
 						}
-
-						updateFunctions.forEach((e) => {
-							e(data);
-						});
 					}
+					updateFunctions.forEach((e) => {
+						e(data);
+					});
+					const incomes = $("#incomes");
+					const expenses = $("#expenses");
+					incomes.html("");
+					expenses.html("");
+
+					data.forEach((e) => {
+						const { name, cost, id, type } = e;
+						addItem[type](name, cost, id, data);
+					});
+					$(".delete-button").on("click", function () {
+						db.collection(user.uid)
+							.doc($(this).parent().attr("data-id"))
+							.delete();
+					});
 				});
 		} else {
 			unsubscribe && unsubscribe();
@@ -99,7 +164,7 @@ export default function (user) {
 				return acc + current.cost;
 			}, 0);
 		const sumExpense = data
-			.filter((e) => e.type === "expenses")
+			.filter((e) => e.type === "expense")
 			.reduce((acc, current) => {
 				return acc + current.cost;
 			}, 0);
@@ -111,17 +176,44 @@ export default function (user) {
 			.reduce((acc, current) => {
 				return acc + current.cost;
 			}, 0);
-		animateNumber($("#income-total"), format(".2f")(sumIncome), 0.01);
+		animateNumber(
+			$("#income-total"),
+			format(".2f")(sumIncome),
+			0.01,
+			true,
+			false
+		);
 	}
 	function updateTotalExpenses(data) {
 		const sumExpense = data
-			.filter((e) => e.type === "expenses")
+			.filter((e) => e.type === "expense")
 			.reduce((acc, current) => {
 				return acc + current.cost;
 			}, 0);
-		animateNumber($("#expenses-total"), format(".2f")(sumExpense), 0.01);
+		animateNumber(
+			$("#expenses-total"),
+			format(".2f")(sumExpense),
+			0.01,
+			true,
+			false
+		);
 	}
 	function updateExpensePercentage(data) {
-		animateNumber($("#total-percentage"));
+		const sumIncome = data
+			.filter((e) => e.type === "income")
+			.reduce((acc, current) => {
+				return acc + current.cost;
+			}, 0);
+		const sumExpense = data
+			.filter((e) => e.type === "expense")
+			.reduce((acc, current) => {
+				return acc + current.cost;
+			}, 0);
+		animateNumber(
+			$("#total-percentage"),
+			getPercentageChange(sumIncome, sumIncome - sumExpense),
+			0.01,
+			false
+		);
 	}
 }

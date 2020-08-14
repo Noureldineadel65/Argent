@@ -73,13 +73,27 @@ main {
 	padding: 0.5rem;
 	margin-left: 0.5rem;
 }
+.expense-percentage-box {
+	background-color: #e71d35;
+	padding: 0.2rem 0.5rem;
+	margin-left: 0.5rem;
+
+	color: #fff;
+}
+.income-percentage-box {
+	background-color: #52b788;
+	padding: 0.2rem 0.5rem;
+	margin-left: 0.5rem;
+
+	color: #fff;
+}
 .section {
 	padding-bottom: 0;
 }
 #showcase {
 	.row {
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 	}
 	.col:first-of-type {
 		h5 {
@@ -143,6 +157,76 @@ main #counter {
 		.col:first-of-type {
 			margin-right: 0rem !important;
 			margin-bottom: 1rem !important;
+		}
+	}
+}
+
+.incomes {
+	.delete-button {
+		color: #52b788;
+		width: 1.4rem;
+		height: 1.4rem;
+		border-radius: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 0.8em;
+		font-weight: bolder;
+		border: 2px solid #52b788;
+		cursor: pointer;
+		position: absolute;
+		right: 3%;
+		opacity: 0;
+		pointer-events: none;
+		transition: all 0.3s;
+	}
+	.income-number {
+		color: #52b788;
+	}
+}
+
+.expenses {
+	.delete-button {
+		color: #e71d36;
+		width: 1.4rem;
+		height: 1.4rem;
+		border-radius: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 0.8em;
+		font-weight: bolder;
+		border: 2px solid #e71d36;
+		cursor: pointer;
+
+		pointer-events: none;
+		position: absolute;
+		right: 3%;
+		opacity: 0;
+		transition: all 0.3s;
+	}
+	.expense-number {
+		color: #e71d36;
+	}
+}
+.income-number,
+.expense-number {
+	transition: transform 0.3s;
+}
+.expenses,
+.incomes {
+	position: relative;
+	li {
+		margin-bottom: 1rem;
+		&:hover {
+			.income-number,
+			.expense-number {
+				transform: translateX(-20px);
+			}
+			.delete-button {
+				pointer-events: all;
+				opacity: 1;
+			}
 		}
 	}
 }
