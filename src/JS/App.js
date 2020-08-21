@@ -2,6 +2,9 @@ import $ from "jquery";
 import { format } from "d3";
 import { auth } from "./Firebase";
 import DrawGraph from "./DrawGraph";
+import switchPage from "./ViewControl";
+import { showBoard } from "./MessageBoard";
+
 import { db } from "./Firebase";
 import { animateNumber, getPercentageChange } from "./utils";
 import empty from "./handlebars/empty.hbs";
@@ -13,7 +16,11 @@ export default function (user) {
 		e.preventDefault();
 	});
 	$(".logout").on("click", function () {
-		auth.signOut();
+		auth.signOut().then(() => {
+			showBoard("logout", user.displayName, function () {
+				switchPage("form");
+			});
+		});
 	});
 	$("select").formSelect();
 	let thingsRef;
@@ -30,7 +37,7 @@ export default function (user) {
 	const addItem = {
 		income: function (name, cost, uid, data) {
 			const incomes = $("#incomes");
-			incomes.append(`<li data-id="${uid}">
+			incomes.append(`<li data-id="${uid}" data-element="${name}">
 			<span class="income-name">${name}</span>
 			<span class="income-number">
 				<span class="sign">+</span> <span class="value">${cost}</span>
@@ -49,14 +56,14 @@ export default function (user) {
 
 			animateNumber(
 				$(`li[data-id="${uid}"] .income-percentage`),
-				res,
+				String(Math.round(res)),
 				0.01,
 				false
 			);
 		},
 		expense: function (name, cost, uid, data) {
 			const expenses = $("#expenses");
-			expenses.append(`<li data-id="${uid}">
+			expenses.append(`<li data-id="${uid}" data-element="${name}">
 			<span class="expense-name">${name}</span>
 			<span class="expense-number">
 				<span class="sign">-</span> <span class="value">${cost}</span>
@@ -72,10 +79,9 @@ export default function (user) {
 				}, 0);
 
 			const res = getPercentageChange(sumIncome, sumIncome - cost);
-
 			animateNumber(
 				$(`li[data-id="${uid}"] .expense-percentage`),
-				res,
+				String(Math.round(res)),
 				0.01,
 				false
 			);
@@ -97,7 +103,7 @@ export default function (user) {
 					thingsRef.add({
 						uid: user.uid,
 						name: itemName,
-						cost: Number(itemCost),
+						cost: +(Math.round(Number(itemCost) + "e+2") + "e-2"),
 						type,
 						createdAt: new Date(),
 					});
@@ -127,9 +133,7 @@ export default function (user) {
 							graph(data);
 						}
 					}
-					updateFunctions.forEach((e) => {
-						e(data);
-					});
+
 					const incomes = $("#incomes");
 					const expenses = $("#expenses");
 					incomes.html("");
@@ -138,6 +142,9 @@ export default function (user) {
 					data.forEach((e) => {
 						const { name, cost, id, type } = e;
 						addItem[type](name, cost, id, data);
+					});
+					updateFunctions.forEach((e) => {
+						e(data);
 					});
 					$(".delete-button").on("click", function () {
 						db.collection(user.uid)
@@ -163,11 +170,13 @@ export default function (user) {
 			.reduce((acc, current) => {
 				return acc + current.cost;
 			}, 0);
+
 		const sumExpense = data
 			.filter((e) => e.type === "expense")
 			.reduce((acc, current) => {
 				return acc + current.cost;
 			}, 0);
+
 		animateNumber($("#total"), format(".2f")(sumIncome - sumExpense), 0.01);
 	}
 	function updateTotalIncome(data) {
@@ -190,6 +199,7 @@ export default function (user) {
 			.reduce((acc, current) => {
 				return acc + current.cost;
 			}, 0);
+
 		animateNumber(
 			$("#expenses-total"),
 			format(".2f")(sumExpense),
@@ -211,7 +221,11 @@ export default function (user) {
 			}, 0);
 		animateNumber(
 			$("#total-percentage"),
-			getPercentageChange(sumIncome, sumIncome - sumExpense),
+			String(
+				Math.round(
+					getPercentageChange(sumIncome, sumIncome - sumExpense)
+				)
+			),
 			0.01,
 			false
 		);

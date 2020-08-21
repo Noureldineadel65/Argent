@@ -18,19 +18,20 @@ export function getFormValues(form) {
 
 export function animateNumber(
 	textEl,
-	end = "60.54",
+	end = "0",
 	speed = 10,
 	fraction = true,
 	sign = true
 ) {
 	let text;
-	// const sign = textEl.parent().find(".sign");
-	// sign.text(Number(end) - Number(textEl.text()) < 0 ? "-" : "+");
+
 	function addSign(num) {
 		return num > 0 && sign ? "+" : "";
 	}
+
 	if (fraction) {
-		text = textEl.text().split(".");
+		text = textEl.text().replace(",", "").split(".");
+
 		end = end.split(".");
 
 		let firstNum = Number(text[0].split(",").join(""));
@@ -38,20 +39,19 @@ export function animateNumber(
 			Number(end[0]) - Number(text[0]) >= 0 ? "plus" : "minus";
 		const firstCount = setInterval(() => {
 			textEl.text(
-				`${addSign(firstNum)}${
-					firstNum == 0 ? firstNum : format(",.2r")(firstNum)
-				}.${text[1]}`
+				`${addSign(firstNum)}${firstNum.toLocaleString()}.${text[1]}`
 			);
 			if (firstNum === Number(end[0])) {
 				clearInterval(firstCount);
 				let secondNum = Number(text[1]);
 				const secondMode =
 					Number(end[1]) - Number(text[1]) >= 0 ? "plus" : "minus";
+
 				const secondCount = setInterval(() => {
 					textEl.text(
-						`${addSign(firstNum)}${
-							firstNum == 0 ? firstNum : format(",.2r")(firstNum)
-						}.${secondNum < 10 ? `0${secondNum}` : secondNum}`
+						`${addSign(firstNum)}${firstNum.toLocaleString()}.${
+							secondNum < 10 ? `0${secondNum}` : secondNum
+						}`
 					);
 					if (secondNum === Number(end[1])) {
 						clearInterval(secondCount);
@@ -91,13 +91,6 @@ export function animateNumber(
 	}
 }
 export function getPercentageChange(oldNumber, newNumber) {
-	/**
-	 * Calculates in percent, the change between 2 numbers.
-	 * e.g from 1000 to 500 = 50%
-	 *
-	 * @param oldNumber The initial value
-	 * @param newNumber The value that changed
-	 */
 	var decreaseValue = oldNumber - newNumber;
 	const res = ((decreaseValue / oldNumber) * 100).toFixed(0);
 	return res === "Infinity" ? Math.abs(newNumber) : res;

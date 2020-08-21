@@ -17,11 +17,11 @@ $(document).ready(function () {
 auth.onAuthStateChanged((user) => {
 	if (user) {
 		showBoard("welcome", user.displayName, function () {
-			const { displayName, email, photoUrl } = user;
-			switchPage("app", { displayName, email, photoUrl });
+			const { displayName } = user;
+			const newAccount =
+				user.metadata.lastSignInTime === user.metadata.creationTime;
+			switchPage("app", { displayName });
 			App(user);
 		});
-	} else {
-		switchPage("form");
 	}
 });

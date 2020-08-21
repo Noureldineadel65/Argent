@@ -70,7 +70,6 @@ function handlePasswords() {
 			$(this).removeClass("valid");
 
 			$(this).addClass("invalid");
-			console.log($(this));
 		} else {
 			$(this).removeClass("invalid");
 
@@ -85,7 +84,6 @@ function formSubmit() {
 		const [email, password] = getFormValues($(e.target));
 		auth.signInWithEmailAndPassword(email, password)
 			.then((cred) => {
-				// showBoard("welcome", cred.user.displayName);
 				console.log("Successfully Signed In!");
 				signInResponse();
 			})
@@ -126,7 +124,7 @@ function addUser(userInfo) {
 					displayName: `${firstName} ${lastName}`,
 				})
 				.then((e) => {
-					showBoard("success", firstName);
+					showBoard("success", `${firstName} ${lastName}`);
 					signUpResponse();
 				});
 		})

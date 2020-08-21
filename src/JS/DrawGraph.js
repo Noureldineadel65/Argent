@@ -132,6 +132,10 @@ export default function () {
 			.transition("changeSliceFill")
 			.duration(300)
 			.attr("fill", "#fff");
+		d3.select(`[data-element="${d.data.name}"]`).classed(
+			"active-item",
+			true
+		);
 	}
 	function onMouseLeave(d) {
 		tip.hide();
@@ -139,6 +143,10 @@ export default function () {
 			.transition("changeSliceFill")
 			.duration(300)
 			.attr("fill", color(d.data.name));
+		d3.select(`[data-element="${d.data.name}"]`).classed(
+			"active-item",
+			false
+		);
 	}
 	function handleClick(d) {
 		tip.hide();

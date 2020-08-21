@@ -22,6 +22,9 @@ const types = {
 	welcome: function (name) {
 		return `<h1>Welcome Back, ${name}!👋</h1><p>Hope you've been doing well :)</p>`;
 	},
+	logout: function (name) {
+		return `<h1>You Have Successfully logged out, ${name}.</h1><p>See you later 👋</p>`;
+	},
 };
 export function showBoard(type, msg, cb) {
 	content.html(types[type](msg));
