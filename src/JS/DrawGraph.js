@@ -128,9 +128,20 @@ export default function () {
 			.attrTween("d", arcTweenEnter);
 		graph.selectAll("path").on("mouseover", onMouseOver);
 		graph.selectAll("path").on("mouseleave", onMouseLeave);
-		graph.selectAll("path").on("dblclick", handleClick);
+		graph.selectAll("path").on("dblclick", handleDoubleClick);
+		graph.selectAll("path").on("click", handleClick);
 		limitLegends();
 	};
+	function handleClick(d) {
+		const currentEl = $(`[data-id="${d.data.id}"]`);
+		currentEl.addClass("active-item");
+		$("html,body").animate(
+			{
+				scrollTop: currentEl.offset().top,
+			},
+			"slow"
+		);
+	}
 	function onMouseOver(d, n, i) {
 		tip.show(d, this);
 		d3.select(this)
@@ -153,7 +164,7 @@ export default function () {
 			false
 		);
 	}
-	function handleClick(d) {
+	function handleDoubleClick(d) {
 		tip.hide();
 		db.collection(d.data.uid).doc(d.data.id).delete().catch(Error);
 	}
