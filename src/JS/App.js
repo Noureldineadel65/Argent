@@ -4,7 +4,7 @@ import { auth } from "./Firebase";
 import DrawGraph from "./DrawGraph";
 import switchPage from "./ViewControl";
 import { showBoard } from "./MessageBoard";
-
+import Error from "./Error";
 import { db } from "./Firebase";
 import { animateNumber, getPercentageChange } from "./utils";
 import empty from "./handlebars/empty.hbs";
@@ -12,6 +12,12 @@ import empty from "./handlebars/empty.hbs";
 export default function (user) {
 	$(".sidenav").sidenav();
 	$(".dropdown-trigger").dropdown();
+	const updateFunctions = [
+		updateTotal,
+		updateTotalIncome,
+		updateTotalExpenses,
+		updateExpensePercentage,
+	];
 	$("a").on("click", function (e) {
 		e.preventDefault();
 	});
@@ -22,18 +28,52 @@ export default function (user) {
 			});
 		});
 	});
+	async function removeDocuments() {
+		const collection = db.collection(user.uid);
+		return collection
+			.get()
+			.then((data) => {
+				data.docs.map((i) => {
+					collection.doc(i.id).delete().catch(Error);
+				});
+			})
+			.catch(Error);
+	}
+	$(".resetData").on("click", function () {
+		$("#total").html("0.00");
+		$("#total-percentage").html("0");
+		$("#expenses-total").html("0.00");
+		$("#income-total").html("0.00");
+
+		removeDocuments().then(() => {
+			db.collection(user.uid)
+				.get()
+				.then((data) => {
+					console.log(data);
+				})
+				.catch(Error);
+		});
+	});
+	$(".deleteAccount").on("click", function () {
+		removeDocuments()
+			.then(() => {
+				user.delete()
+					.then(() => {
+						showBoard("delete", user.displayName, function () {
+							switchPage("form");
+						});
+					})
+					.catch(Error);
+			})
+			.catch(Error);
+	});
 	$("select").formSelect();
 	let thingsRef;
 	let unsubscribe;
 	let sizeValue = 1;
 	let graph;
 	let draw = false;
-	const updateFunctions = [
-		updateTotal,
-		updateTotalIncome,
-		updateTotalExpenses,
-		updateExpensePercentage,
-	];
+
 	const addItem = {
 		income: function (name, cost, uid, data) {
 			const incomes = $("#incomes");
@@ -100,13 +140,17 @@ export default function (user) {
 
 				if (!isNaN(itemCost) && type) {
 					$(this).trigger("reset");
-					thingsRef.add({
-						uid: user.uid,
-						name: itemName,
-						cost: +(Math.round(Number(itemCost) + "e+2") + "e-2"),
-						type,
-						createdAt: new Date(),
-					});
+					thingsRef
+						.add({
+							uid: user.uid,
+							name: itemName,
+							cost: +(
+								Math.round(Number(itemCost) + "e+2") + "e-2"
+							),
+							type,
+							createdAt: new Date(),
+						})
+						.catch(Error);
 				} else if (!type) {
 					showError("Please select a type");
 				} else {
@@ -149,7 +193,8 @@ export default function (user) {
 					$(".delete-button").on("click", function () {
 						db.collection(user.uid)
 							.doc($(this).parent().attr("data-id"))
-							.delete();
+							.delete()
+							.catch(Error);
 					});
 				});
 		} else {

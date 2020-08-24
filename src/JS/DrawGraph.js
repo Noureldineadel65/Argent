@@ -2,8 +2,11 @@ import * as d3 from "d3";
 import $ from "jquery";
 import legendPlugin from "d3-svg-legend";
 import tipPlugin from "d3-tip";
+import Error from "./Error";
+
 import { db } from "./Firebase";
 let sizeValue = 1;
+const legendLimit = 6;
 function mapValueToSize() {
 	return d3.scaleLinear().domain([1310, 360]).range([1, 0.6]);
 }
@@ -81,6 +84,7 @@ export default function () {
 		.shape("square")
 		.shapePadding(10)
 		.scale(color);
+
 	const tip = tipPlugin()
 		.attr("class", "tip card")
 		.html((d) => {
@@ -125,6 +129,7 @@ export default function () {
 		graph.selectAll("path").on("mouseover", onMouseOver);
 		graph.selectAll("path").on("mouseleave", onMouseLeave);
 		graph.selectAll("path").on("dblclick", handleClick);
+		limitLegends();
 	};
 	function onMouseOver(d, n, i) {
 		tip.show(d, this);
@@ -150,6 +155,17 @@ export default function () {
 	}
 	function handleClick(d) {
 		tip.hide();
-		db.collection(d.data.uid).doc(d.data.id).delete();
+		db.collection(d.data.uid).doc(d.data.id).delete().catch(Error);
+	}
+	function limitLegends() {
+		const legends = d3.select(".legendCells").selectAll(".cell");
+		const currentLength = legends.nodes().length;
+		if (currentLength < legendLimit) {
+			legends.each((d, i, n) => {
+				if (i + 1 >= legendLimit) {
+					n[i].remove();
+				}
+			});
+		}
 	}
 }

@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { capitalize, hideElement, showElement, getFormValues } from "./utils";
+import Error from "./Error";
 import firebase from "firebase/app";
 import { auth } from "./Firebase";
 import { validatePass } from "./Form";
@@ -126,7 +127,8 @@ function addUser(userInfo) {
 				.then((e) => {
 					showBoard("success", `${firstName} ${lastName}`);
 					signUpResponse();
-				});
+				})
+				.catch(Error);
 		})
 		.catch((e) => {
 			if (e.code === "auth/email-already-in-use") {
@@ -165,11 +167,6 @@ function signUpResponse() {
 }
 function socialLogs() {
 	$(".google").on("click", function () {
-		firebase
-			.auth()
-			.signInWithPopup(googleProvider)
-			.then((result) => {
-				console.log(result);
-			});
+		firebase.auth().signInWithPopup(googleProvider).catch(Error);
 	});
 }

@@ -2,6 +2,7 @@
 import "../sass/main.scss";
 // Import Materialize JS Functions
 import "materialize-css/dist/js/materialize.min.js";
+
 // Importing Jquery
 import $ from "jquery";
 import { auth } from "./Firebase";
@@ -16,12 +17,15 @@ $(document).ready(function () {
 // Auth State Changes
 auth.onAuthStateChanged((user) => {
 	if (user) {
-		showBoard("welcome", user.displayName, function () {
+		const state =
+			user.metadata.creationTime === user.metadata.lastSignInTime
+				? "new"
+				: "welcome";
+		showBoard(state, user.displayName, function () {
 			const { displayName } = user;
-			const newAccount =
-				user.metadata.lastSignInTime === user.metadata.creationTime;
+
 			switchPage("app", { displayName });
-			App(user);
+			$("#close-icon").on("click", () => App(user));
 		});
 	}
 });
