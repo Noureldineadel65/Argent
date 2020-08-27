@@ -14,7 +14,10 @@ export default function () {
 		AutoScroll();
 	}
 }
-const googleProvider = new firebase.auth.GoogleAuthProvider();
+const providers = {
+	googleProvider: new firebase.auth.GoogleAuthProvider(),
+	githubProvider: new firebase.auth.GithubAuthProvider(),
+};
 function handleSlides() {
 	const signUpWith = $(".signUpWith");
 	$(".already").on("click", function (e) {
@@ -170,7 +173,16 @@ function signUpResponse() {
 }
 function socialLogs() {
 	$(".google").on("click", function () {
-		firebase.auth().signInWithPopup(googleProvider).catch(Error);
+		firebase.auth().signInWithPopup(providers.googleProvider).catch(Error);
+	});
+	$(".github").on("click", function () {
+		firebase
+			.auth()
+			.signInWithPopup(providers.githubProvider)
+			.catch(Error)
+			.then((result) => {
+				console.log("github", result);
+			});
 	});
 }
 function AutoScroll() {

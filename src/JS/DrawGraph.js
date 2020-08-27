@@ -78,20 +78,19 @@ export default function () {
 	}
 	const legendGroup = svg
 		.append("g")
-		.attr("transform", `translate(${translate}, 10)`);
+		.attr("transform", `translate(${translate}, 5)`);
 	const legend = legendPlugin
 		.legendColor()
 		.shape("square")
 		.shapePadding(10)
 		.scale(color);
-
+	console.log(legendGroup.selectAll("text"));
 	const tip = tipPlugin()
 		.attr("class", "tip card")
 		.html((d) => {
 			let content = `<div class="name">${d.data.name}</div>`;
 			content += `<div class="type">${d.data.type}</div>`;
 			content += `<div class="cost">${d.data.cost}</div>`;
-			content += `<div class="edit">Click slice to Edit</div>`;
 			content += `<div class="delete">Double click slice to delete</div>`;
 			return content;
 		});

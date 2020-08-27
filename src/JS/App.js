@@ -39,12 +39,14 @@ export default function (user) {
 			})
 			.catch(Error);
 	}
-	$(".resetData").on("click", function () {
+	function resetValues() {
 		$("#total").html("0.00");
 		$("#total-percentage").html("0");
 		$("#expenses-total").html("0.00");
 		$("#income-total").html("0.00");
-
+	}
+	$(".resetData").on("click", function () {
+		resetValues();
 		removeDocuments().then(() => {
 			db.collection(user.uid)
 				.get()
@@ -55,6 +57,7 @@ export default function (user) {
 		});
 	});
 	$(".deleteAccount").on("click", function () {
+		resetValues();
 		removeDocuments()
 			.then(() => {
 				user.delete()
