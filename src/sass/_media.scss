@@ -1,0 +1,19 @@
+@media only screen and (max-width: 801px) {
+	.card.horizontal {
+		flex-direction: column;
+	}
+	.signUpWith {
+		height: 50%;
+		width: 100%;
+	}
+	.signUpWith.slided {
+		transform: translateX(0) translateY(100%);
+	}
+	h1 {
+		font-size: 3.5rem;
+	}
+	.left-header-line,
+	.right-header-line {
+		display: none;
+	}
+}

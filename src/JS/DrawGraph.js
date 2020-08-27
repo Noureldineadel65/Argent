@@ -134,7 +134,8 @@ export default function () {
 	};
 	function handleClick(d) {
 		const currentEl = $(`[data-id="${d.data.id}"]`);
-		currentEl.addClass("active-item");
+		currentEl.addClass("full");
+		setTimeout(() => currentEl.removeClass("full"), 500);
 		$("html,body").animate(
 			{
 				scrollTop: currentEl.offset().top,

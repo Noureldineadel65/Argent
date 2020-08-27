@@ -18,6 +18,8 @@ body {
 	overflow-x: hidden;
 	height: 100vh;
 	display: flex;
+	height: 100vh;
+	overflow-x: hidden !important;
 	flex-direction: column;
 	justify-content: space-between;
 	background-color: #ffffff;

@@ -10,6 +10,9 @@ export default function () {
 	handlePasswords();
 	formSubmit();
 	socialLogs();
+	if ($(window).width() <= 801) {
+		AutoScroll();
+	}
 }
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 function handleSlides() {
@@ -146,7 +149,7 @@ function addUser(userInfo) {
 			}
 		});
 }
-hideElement($(".loader"));
+hideElement($("#sign-up-action .loader"));
 function startGeneratingAccount() {
 	hideElement($("#sign-up-btn"));
 	showElement($("#sign-up-action .loader"), "flex");
@@ -168,5 +171,26 @@ function signUpResponse() {
 function socialLogs() {
 	$(".google").on("click", function () {
 		firebase.auth().signInWithPopup(googleProvider).catch(Error);
+	});
+}
+function AutoScroll() {
+	const animationTime = 300;
+	const doc = $("html, body");
+	$(".switch").on("click", function (e) {
+		if (e.target.id === "switch-right") {
+			doc.animate(
+				{
+					scrollTop: 0,
+				},
+				animationTime
+			);
+		} else {
+			doc.animate(
+				{
+					scrollTop: $(document).height(),
+				},
+				animationTime
+			);
+		}
 	});
 }
