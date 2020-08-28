@@ -75,6 +75,28 @@
             transition: 1s ease-in-out;
         }
 
+        body::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            background-color: #F5F5F5;
+        }
+
+        body::-webkit-scrollbar {
+            width: 10px;
+            background-color: #F5F5F5;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background-color: #F90;
+            background-image: -webkit-linear-gradient(90deg,
+                    rgba(255, 255, 255, .2) 25%,
+                    transparent 25%,
+                    transparent 50%,
+                    rgba(255, 255, 255, .2) 50%,
+                    rgba(255, 255, 255, .2) 75%,
+                    transparent 75%,
+                    transparent)
+        }
+
         svg {
             position: absolute;
             left: 0;
@@ -229,7 +251,7 @@
                     </ul>
                 </div>
                 <div class="btn-effect">
-                    <a href="./app.html"><button class="btn">
+                    <a href="./app/index.html"><button class="btn">
                             <svg width="180px" height="60px" viewBox="0 0 180 60" class="border">
                                 <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
                                 <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
